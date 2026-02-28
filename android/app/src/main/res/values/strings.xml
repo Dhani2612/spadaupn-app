@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SPADA UPN</string>
+    <string name="title_activity_main">SPADA UPN</string>
+    <string name="package_name">com.spadaupn.app</string>
+    <string name="custom_url_scheme">com.spadaupn.app</string>
+</resources>

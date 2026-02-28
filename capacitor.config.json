@@ -1,0 +1,20 @@
+{
+    "appId": "com.spadaupn.app",
+    "appName": "SPADA UPN",
+    "webDir": "dist",
+    "server": {
+        "androidScheme": "https"
+    },
+    "plugins": {
+        "CapacitorHttp": {
+            "enabled": false
+        },
+        "CapacitorCookies": {
+            "enabled": true
+        },
+        "LocalNotifications": {
+            "smallIcon": "ic_stat_icon",
+            "iconColor": "#00c896"
+        }
+    }
+}
