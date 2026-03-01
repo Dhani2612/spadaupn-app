@@ -232,11 +232,11 @@ const App = {
     renderDashboardCourses() {
         const container = document.getElementById('dashboard-courses');
         if (this.courses.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><h3>Tidak ada mata kuliah</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-book"></i></div><h3>Tidak ada mata kuliah</h3></div>';
             return;
         }
 
-        const icons = ['📗', '📘', '📙', '📕', '📓', '📔', '📒', '📑', '📖', '📚'];
+        const icons = ['<i class="bx bxs-book"></i>', '<i class="bx bxs-book-alt"></i>', '<i class="bx bxs-book-content"></i>', '<i class="bx bx-book"></i>', '<i class="bx bxs-book-bookmark"></i>'];
         container.innerHTML = this.courses.map((c, i) => `
             <div class="mini-course-card" data-course-id="${c.id}">
                 <span class="mini-course-icon">${icons[i % icons.length]}</span>
@@ -252,13 +252,13 @@ const App = {
     renderDeadlines(deadlines) {
         const container = document.getElementById('dashboard-deadlines');
         if (deadlines.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🎉</div><h3>Tidak ada deadline</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-party"></i></div><h3>Tidak ada deadline</h3></div>';
             return;
         }
         // Only show unsubmitted deadlines
         const pending = deadlines.filter(d => !this.isAssignmentSubmitted(d.status));
         if (pending.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🎉</div><h3>Semua tugas sudah dikerjakan!</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-party"></i></div><h3>Semua tugas sudah dikerjakan!</h3></div>';
             return;
         }
 
@@ -271,7 +271,7 @@ const App = {
         }).sort((a, b) => a._diff - b._diff);
 
         if (parsed.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🎉</div><h3>Tidak ada deadline</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-party"></i></div><h3>Tidak ada deadline</h3></div>';
             return;
         }
 
@@ -279,7 +279,7 @@ const App = {
             const timeLeft = d._diff > 0 ? this._formatTimeLeft(d._diff) : 'Sudah lewat';
             return `
             <div class="deadline-item" data-module-id="${d.moduleId || ''}" style="cursor:pointer">
-                <div class="deadline-icon">📝</div>
+                <div class="deadline-icon"><i class="bx bx-task"></i></div>
                 <div class="deadline-info">
                     <div class="deadline-name">${d.name}</div>
                     <div class="deadline-course-name">${d.courseName}</div>
@@ -323,7 +323,7 @@ const App = {
                     const { LocalNotifications } = await import('@capacitor/local-notifications');
                     await LocalNotifications.schedule({
                         notifications: [{
-                            title: `⚠️ Deadline ${hoursLeft > 0 ? hoursLeft + ' jam' : minsLeft + ' menit'} lagi!`,
+                            title: `<i class="bx bx-error-circle"></i> Deadline ${hoursLeft > 0 ? hoursLeft + ' jam' : minsLeft + ' menit'} lagi!`,
                             body: `${d.name}\n${d.courseName}`,
                             id: parseInt(d.moduleId) || Date.now(),
                             schedule: { at: new Date(Date.now() + 1000) },
@@ -404,7 +404,7 @@ const App = {
             }
 
             const colors = ['#00c896', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#10b981', '#f97316', '#6366f1'];
-            const icons = ['📗', '📘', '📙', '📕', '📓', '📔', '📒', '📑', '📖', '📚'];
+            const icons = ['<i class="bx bxs-book"></i>', '<i class="bx bxs-book-alt"></i>', '<i class="bx bxs-book-content"></i>', '<i class="bx bx-book"></i>', '<i class="bx bxs-book-bookmark"></i>'];
             const cards = [];
 
             for (let i = 0; i < this.courses.length; i++) {
@@ -414,10 +414,10 @@ const App = {
                 try {
                     const content = await spada.getCourseContent(course.id);
                     course._content = content;
-                    if (content.attendance.length > 0) badges += '<span class="course-badge">📋 Absensi</span>';
-                    if (content.assignments.length > 0) badges += `<span class="course-badge">📝 ${content.assignments.length} Tugas</span>`;
-                    if (content.forums.length > 0) badges += '<span class="course-badge">📢 Forum</span>';
-                    if (content.resources.length > 0) badges += `<span class="course-badge">📄 ${content.resources.length} Materi</span>`;
+                    if (content.attendance.length > 0) badges += '<span class="course-badge"><i class="bx bx-list-check"></i> Absensi</span>';
+                    if (content.assignments.length > 0) badges += `<span class="course-badge"><i class="bx bx-task"></i> ${content.assignments.length} Tugas</span>`;
+                    if (content.forums.length > 0) badges += '<span class="course-badge"><i class="bx bx-conversation"></i> Forum</span>';
+                    if (content.resources.length > 0) badges += `<span class="course-badge"><i class="bx bx-file"></i> ${content.resources.length} Materi</span>`;
                 } catch { }
 
                 cards.push(`
@@ -435,7 +435,7 @@ const App = {
                 card.addEventListener('click', () => this.openCourseDetail(card.dataset.courseId));
             });
         } catch (error) {
-            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">❌</div><h3>Gagal memuat</h3><p>${error.message}</p></div>`;
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-x-circle"></i></div><h3>Gagal memuat</h3><p>${error.message}</p></div>`;
         }
     },
 
@@ -473,7 +473,7 @@ const App = {
             try {
                 course._content = await spada.getCourseContent(courseId);
             } catch {
-                contentEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">❌</div><h3>Gagal memuat konten</h3></div>';
+                contentEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-x-circle"></i></div><h3>Gagal memuat konten</h3></div>';
                 return;
             }
         }
@@ -498,13 +498,13 @@ const App = {
 
     renderMaterials(container, content) {
         if (content.resources.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📄</div><h3>Belum ada materi</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-file"></i></div><h3>Belum ada materi</h3></div>';
             return;
         }
-        const icons = { resource: '📄', page: '📃', folder: '📁', url: '🔗', unknown: '📎' };
+        const icons = { resource: '<i class="bx bx-file"></i>', page: '<i class="bx bx-file-blank"></i>', folder: '<i class="bx bx-folder"></i>', url: '<i class="bx bx-link"></i>', unknown: '<i class="bx bx-paperclip"></i>' };
         container.innerHTML = content.resources.map(r => `
             <div class="module-item" data-url="${r.url}">
-                <div class="module-icon">${icons[r.type] || '📄'}</div>
+                <div class="module-icon">${icons[r.type] || '<i class="bx bx-file"></i>'}</div>
                 <div class="module-info">
                     <div class="module-name">${r.name}</div>
                     <div class="module-meta">${r.type}</div>
@@ -520,7 +520,7 @@ const App = {
 
     renderCourseAssignments(container, content) {
         if (content.assignments.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📝</div><h3>Belum ada tugas</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-task"></i></div><h3>Belum ada tugas</h3></div>';
             return;
         }
         container.innerHTML = '<div class="loading-spinner"></div>';
@@ -536,7 +536,7 @@ const App = {
         if (assignments.length === 0) assignments = modules.map(m => ({ ...m, submissionStatus: '', dueDate: '' }));
 
         if (assignments.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📝</div><h3>Belum ada tugas</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-task"></i></div><h3>Belum ada tugas</h3></div>';
             return;
         }
 
@@ -545,10 +545,10 @@ const App = {
                 <div class="assignment-header">
                     <div class="assignment-title">${a.name}</div>
                     <span class="module-status ${submitted ? 'status-submitted' : 'status-not-submitted'}">
-                        ${submitted ? '✅ Done' : '⚠️ Belum'}
+                        ${submitted ? '<i class="bx bx-check-circle"></i> Done' : '<i class="bx bx-error-circle"></i> Belum'}
                     </span>
                 </div>
-                ${a.dueDate ? `<div class="assignment-deadline">⏰ ${a.dueDate}</div>` : ''}
+                ${a.dueDate ? `<div class="assignment-deadline"><i class="bx bx-time"></i> ${a.dueDate}</div>` : ''}
             </div>`;
 
         container.innerHTML = assignments.map(a => {
@@ -566,7 +566,7 @@ const App = {
 
     renderCourseAttendance(container, content) {
         if (content.attendance.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><h3>Tidak ada absensi</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-list-check"></i></div><h3>Tidak ada absensi</h3></div>';
             return;
         }
         container.innerHTML = '<div class="loading-spinner"></div>';
@@ -593,9 +593,9 @@ const App = {
                             statusClass = 'status-pending'; statusText = 'Belum Absen';
                             actionBtn = `<button class="btn-attend" data-session="${s.sessionId}">Absen</button>`;
                         } else if ((s.status || '').toLowerCase().includes('present') || (s.status || '').toLowerCase().includes('hadir')) {
-                            statusClass = 'status-present'; statusText = '✅ Present';
+                            statusClass = 'status-present'; statusText = '<i class="bx bx-check-circle"></i> Present';
                         } else if ((s.status || '').toLowerCase().includes('absent')) {
-                            statusClass = 'status-absent'; statusText = '❌ Absent';
+                            statusClass = 'status-absent'; statusText = '<i class="bx bx-x-circle"></i> Absent';
                         }
                         html += `<div class="attendance-session"><div><div class="attendance-date">${s.date}</div><div class="attendance-desc">${s.description}</div></div><div style="display:flex;align-items:center;gap:8px"><span class="module-status ${statusClass}">${statusText}</span>${actionBtn}</div></div>`;
                     }
@@ -604,18 +604,18 @@ const App = {
             } catch { }
         }
 
-        container.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">📋</div><h3>Tidak ada session</h3></div>';
+        container.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-list-check"></i></div><h3>Tidak ada session</h3></div>';
 
         container.querySelectorAll('.btn-attend').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                btn.disabled = true; btn.textContent = '⏳';
+                btn.disabled = true; btn.textContent = '<i class="bx bx-loader-alt bx-spin"></i>';
                 const result = await spada.submitAttendance(btn.dataset.session);
                 if (result.success) {
-                    btn.textContent = '✅'; btn.style.background = 'var(--success)';
+                    btn.textContent = '<i class="bx bx-check-circle"></i>'; btn.style.background = 'var(--success)';
                     this.showToast('Berhasil', 'Absen Present!', 'success');
                 } else {
-                    btn.textContent = '❌'; btn.disabled = false;
+                    btn.textContent = '<i class="bx bx-x-circle"></i>'; btn.disabled = false;
                     this.showToast('Gagal', result.error, 'error');
                 }
             });
@@ -624,7 +624,7 @@ const App = {
 
     renderCourseForums(container, content) {
         if (content.forums.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📢</div><h3>Tidak ada forum</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-conversation"></i></div><h3>Tidak ada forum</h3></div>';
             return;
         }
         container.innerHTML = '<div class="loading-spinner"></div>';
@@ -641,7 +641,7 @@ const App = {
                 }
             } catch { }
         }
-        container.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">📢</div><h3>Belum ada pengumuman</h3></div>';
+        container.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-conversation"></i></div><h3>Belum ada pengumuman</h3></div>';
     },
 
     async loadAllAttendance() {
@@ -661,7 +661,7 @@ const App = {
         }
 
         if (coursesWithAttendance.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><h3>Tidak ada absensi</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-list-check"></i></div><h3>Tidak ada absensi</h3></div>';
             return;
         }
 
@@ -675,9 +675,9 @@ const App = {
                 <div class="attendance-course-card" data-course-idx="${i}" style="border-left: 4px solid ${colors[i % colors.length]}">
                     <div class="attendance-course-card-info">
                         <div class="attendance-course-card-name">${course.name}</div>
-                        <div class="attendance-course-card-meta">📚 ${course._content.attendance.length} modul absensi</div>
+                        <div class="attendance-course-card-meta"><i class="bx bx-book"></i> ${course._content.attendance.length} modul absensi</div>
                     </div>
-                    <div class="attendance-course-card-arrow">›</div>
+                    <div class="attendance-course-card-arrow"><i class="bx bx-chevron-right"></i></div>
                 </div>
             `).join('') + '</div>';
 
@@ -726,33 +726,33 @@ const App = {
         let html = `
             <div class="attendance-detail-view">
                 <div class="attendance-detail-header">
-                    <button class="btn-back-attendance" id="btn-back-attendance">← Kembali</button>
+                    <button class="btn-back-attendance" id="btn-back-attendance"><i class="bx bx-arrow-back"></i> Kembali</button>
                     <div class="attendance-detail-title">${course.name}</div>
                 </div>`;
 
         if (allSessions.length === 0) {
-            html += '<div class="empty-state"><div class="empty-state-icon">📋</div><h3>Tidak ada sesi absensi</h3></div>';
+            html += '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-list-check"></i></div><h3>Tidak ada sesi absensi</h3></div>';
         } else {
             html += '<div class="attendance-sessions-list">';
             for (const s of allSessions) {
                 let statusClass = '', statusText = s.status || '-', actionBtn = '';
                 if (s.canSubmit) {
                     statusClass = 'status-pending';
-                    statusText = '⏳ Belum Absen';
-                    actionBtn = `<button class="btn-attend-manual" data-session="${s.sessionId}" data-module="${s._attModuleId}">✅ Hadir</button>`;
+                    statusText = '<i class="bx bx-loader-alt bx-spin"></i> Belum Absen';
+                    actionBtn = `<button class="btn-attend-manual" data-session="${s.sessionId}" data-module="${s._attModuleId}"><i class="bx bx-check-circle"></i> Hadir</button>`;
                 } else if ((s.status || '').toLowerCase().includes('present') || (s.status || '').toLowerCase().includes('hadir')) {
                     statusClass = 'status-present';
-                    statusText = '✅ Present';
+                    statusText = '<i class="bx bx-check-circle"></i> Present';
                 } else if ((s.status || '').toLowerCase().includes('absent')) {
                     statusClass = 'status-absent';
-                    statusText = '❌ Absent';
+                    statusText = '<i class="bx bx-x-circle"></i> Absent';
                 } else if ((s.status || '').toLowerCase().includes('late')) {
                     statusClass = 'status-late';
-                    statusText = '⏰ Late';
+                    statusText = '<i class="bx bx-time"></i> Late';
                 } else {
                     // No status yet - session not opened
                     statusClass = 'status-locked';
-                    statusText = '🔒 Belum dibuka';
+                    statusText = '<i class="bx bx-lock-alt"></i> Belum dibuka';
                 }
 
                 html += `
@@ -783,23 +783,23 @@ const App = {
             btn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 btn.disabled = true;
-                btn.textContent = '⏳ Memproses...';
+                btn.textContent = '<i class="bx bx-loader-alt bx-spin"></i> Memproses...';
                 try {
                     const result = await spada.submitAttendance(btn.dataset.session, btn.dataset.module);
                     if (result.success) {
-                        btn.textContent = '✅ Berhasil';
+                        btn.textContent = '<i class="bx bx-check-circle"></i> Berhasil';
                         btn.style.background = 'var(--success)';
                         btn.style.color = '#fff';
                         this.showToast('Berhasil', 'Absen Present berhasil!', 'success');
                         // Refresh view
                         setTimeout(() => this._openCourseAttendance(course), 1000);
                     } else {
-                        btn.textContent = '✅ Hadir';
+                        btn.textContent = '<i class="bx bx-check-circle"></i> Hadir';
                         btn.disabled = false;
                         this.showToast('Gagal', result.error || 'Gagal absen', 'error');
                     }
                 } catch (err) {
-                    btn.textContent = '✅ Hadir';
+                    btn.textContent = '<i class="bx bx-check-circle"></i> Hadir';
                     btn.disabled = false;
                     this.showToast('Gagal', err.message, 'error');
                 }
@@ -837,10 +837,10 @@ const App = {
                         <div class="assignment-course">${assign.courseName}</div>
                     </div>
                     <span class="module-status ${submitted ? 'status-submitted' : 'status-not-submitted'}">
-                        ${submitted ? '✅' : '⚠️'}
+                        ${submitted ? '<i class="bx bx-check-circle"></i>' : '<i class="bx bx-error-circle"></i>'}
                     </span>
                 </div>
-                ${assign.dueDate ? `<div class="assignment-deadline">⏰ ${assign.dueDate}</div>` : ''}
+                ${assign.dueDate ? `<div class="assignment-deadline"><i class="bx bx-time"></i> ${assign.dueDate}</div>` : ''}
             </div>`;
 
         let html = '';
@@ -856,16 +856,16 @@ const App = {
         const sortedPending = sortByDeadline(pending);
 
         if (sortedPending.length > 0) {
-            html += `<div class="assignment-section-header pending-header">📌 Belum Dikerjakan (${sortedPending.length})</div>`;
+            html += `<div class="assignment-section-header pending-header"><i class="bx bx-pin"></i> Belum Dikerjakan (${sortedPending.length})</div>`;
             html += sortedPending.map(a => renderCard(a, false)).join('');
         }
 
         if (done.length > 0) {
-            html += `<div class="assignment-section-header done-header">✅ Sudah Dikerjakan (${done.length})</div>`;
+            html += `<div class="assignment-section-header done-header"><i class="bx bx-check-circle"></i> Sudah Dikerjakan (${done.length})</div>`;
             html += done.map(a => renderCard(a, true)).join('');
         }
 
-        container.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">📝</div><h3>Tidak ada tugas</h3></div>';
+        container.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-task"></i></div><h3>Tidak ada tugas</h3></div>';
 
         container.querySelectorAll('.assignment-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -913,12 +913,12 @@ const App = {
             if (detail.instructorFiles?.length > 0) {
                 instructorFilesHtml = `
                     <div class="submission-files" style="margin-top:16px">
-                        <div class="submission-files-title">📎 Lampiran Dosen</div>
+                        <div class="submission-files-title"><i class="bx bx-paperclip"></i> Lampiran Dosen</div>
                         ${detail.instructorFiles.map(f => `
                             <a href="${f.url}" target="_blank" class="submission-file-item">
-                                <span class="file-icon">📄</span>
+                                <span class="file-icon"><i class="bx bx-file"></i></span>
                                 <span class="file-name">${f.name}</span>
-                                <span class="file-open">↗️</span>
+                                <span class="file-open"><i class="bx bx-link-external"></i></span>
                             </a>`).join('')}
                     </div>`;
             }
@@ -928,12 +928,12 @@ const App = {
             if (detail.files?.length > 0) {
                 studentFilesHtml = `
                     <div class="submission-files">
-                        <div class="submission-files-title">📤 File yang Saya Submit</div>
+                        <div class="submission-files-title"><i class="bx bx-upload"></i> File yang Saya Submit</div>
                         ${detail.files.map(f => `
                             <a href="${f.url}" target="_blank" class="submission-file-item student-file">
-                                <span class="file-icon">📎</span>
+                                <span class="file-icon"><i class="bx bx-paperclip"></i></span>
                                 <span class="file-name">${f.name}</span>
-                                <span class="file-open">↗️</span>
+                                <span class="file-open"><i class="bx bx-link-external"></i></span>
                             </a>`).join('')}
                     </div>`;
             }
@@ -943,7 +943,7 @@ const App = {
             if (detail.submittedText) {
                 textHtml = `
                     <div class="submission-text">
-                        <div class="submission-text-title">📝 Teks yang Saya Submit</div>
+                        <div class="submission-text-title"><i class="bx bx-task"></i> Teks yang Saya Submit</div>
                         <div class="submission-text-content">${detail.submittedText}</div>
                     </div>`;
             }
@@ -951,15 +951,15 @@ const App = {
             // Build submission form UI
             let submissionFormHtml = '';
             if (detail.canSubmit) {
-                const buttonLabel = isSubmitted ? '✏️ Edit Submisi' : '📤 Submit Tugas';
+                const buttonLabel = isSubmitted ? '<i class="bx bx-edit"></i> Edit Submisi' : '<i class="bx bx-upload"></i> Submit Tugas';
                 const buttonClass = isSubmitted ? 'btn-edit-submit' : 'btn-submit-assignment';
                 submissionFormHtml = `
                     <div class="submission-form" id="submission-form-area">
-                        <div class="submission-form-title">${isSubmitted ? '✏️ Edit Submisi' : '📤 Kirim Tugas'}</div>
+                        <div class="submission-form-title">${isSubmitted ? '<i class="bx bx-edit"></i> Edit Submisi' : '<i class="bx bx-upload"></i> Kirim Tugas'}</div>
                         <div class="submission-form-fields">
                             <div class="file-upload-area" id="file-upload-area">
                                 <input type="file" id="submission-file-input" style="display:none" multiple>
-                                <button class="btn-pick-file" id="btn-pick-file">📁 Pilih File</button>
+                                <button class="btn-pick-file" id="btn-pick-file"><i class="bx bx-folder"></i> Pilih File</button>
                                 <div class="selected-files" id="selected-files-list"></div>
                             </div>
                             <div class="text-submit-area">
@@ -980,7 +980,7 @@ const App = {
             container.innerHTML = `
                 <div class="assignment-detail-card">
                     <div class="detail-status-banner ${isSubmitted ? 'banner-submitted' : 'banner-pending'}">
-                        ${isSubmitted ? '✅ Sudah Dikerjakan' : '⚠️ Belum Dikerjakan'}
+                        ${isSubmitted ? '<i class="bx bx-check-circle"></i> Sudah Dikerjakan' : '<i class="bx bx-error-circle"></i> Belum Dikerjakan'}
                     </div>
                     <div class="detail-row"><span class="detail-label">Status Pengiriman</span><span class="detail-value">${detail.submissionStatus || '-'}</span></div>
                     <div class="detail-row"><span class="detail-label">Status Penilaian</span><span class="detail-value">${detail.gradingStatus || '-'}</span></div>
@@ -991,7 +991,7 @@ const App = {
                     ${studentFilesHtml}
                     ${textHtml}
                     ${submissionFormHtml}
-                    <a href="${spadaViewUrl}" target="_blank" class="btn-open-spada">🌐 Buka di SPADA</a>
+                    <a href="${spadaViewUrl}" target="_blank" class="btn-open-spada"><i class="bx bx-globe"></i> Buka di SPADA</a>
                 </div>`;
 
             // Bind submission events
@@ -999,7 +999,7 @@ const App = {
                 this._bindSubmissionEvents(moduleId);
             }
         } catch (error) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">❌</div><h3>Gagal memuat detail</h3></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="bx bx-x-circle"></i></div><h3>Gagal memuat detail</h3></div>';
         }
     },
 
@@ -1018,7 +1018,7 @@ const App = {
             fileInput.addEventListener('change', () => {
                 this._selectedFiles = Array.from(fileInput.files);
                 filesList.innerHTML = this._selectedFiles.map(f =>
-                    `<div class="selected-file-item">📄 ${f.name} <span class="file-size">(${(f.size / 1024).toFixed(1)} KB)</span></div>`
+                    `<div class="selected-file-item"><i class="bx bx-file"></i> ${f.name} <span class="file-size">(${(f.size / 1024).toFixed(1)} KB)</span></div>`
                 ).join('');
             });
         }
@@ -1026,7 +1026,7 @@ const App = {
         if (btnSubmit) {
             btnSubmit.addEventListener('click', async () => {
                 btnSubmit.disabled = true;
-                btnSubmit.textContent = '⏳ Memproses...';
+                btnSubmit.textContent = '<i class="bx bx-loader-alt bx-spin"></i> Memproses...';
                 const progressDiv = document.getElementById('upload-progress');
                 const statusDiv = document.getElementById('upload-status');
                 const fillDiv = document.getElementById('upload-fill');
@@ -1057,15 +1057,15 @@ const App = {
                     await spada.submitAssignment(moduleId, formTokens, onlineText);
 
                     if (fillDiv) fillDiv.style.width = '100%';
-                    if (statusDiv) statusDiv.textContent = '✅ Berhasil!';
+                    if (statusDiv) statusDiv.textContent = '<i class="bx bx-check-circle"></i> Berhasil!';
                     this.showToast('Berhasil', 'Tugas berhasil disubmit!', 'success');
 
                     // Refresh detail after 1s
                     setTimeout(() => this.openAssignmentDetail(moduleId), 1000);
                 } catch (error) {
-                    if (statusDiv) statusDiv.textContent = `❌ ${error.message}`;
+                    if (statusDiv) statusDiv.textContent = `<i class="bx bx-x-circle"></i> ${error.message}`;
                     btnSubmit.disabled = false;
-                    btnSubmit.textContent = '📤 Coba Lagi';
+                    btnSubmit.textContent = '<i class="bx bx-upload"></i> Coba Lagi';
                     this.showToast('Gagal', error.message, 'error');
                 }
             });

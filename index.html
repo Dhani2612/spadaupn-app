@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="/src/styles/main.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
+  <!-- Boxicons for Professional Icons -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -16,24 +18,24 @@
     <!-- ==================== BOTTOM NAV (Mobile) ==================== -->
     <nav id="bottom-nav" style="display:none">
       <div class="nav-item active" data-page="dashboard">
-        <span class="nav-icon">🏠</span>
+        <span class="nav-icon"><i class='bx bx-home-alt'></i></span>
         <span class="nav-label">Home</span>
       </div>
       <div class="nav-item" data-page="courses">
-        <span class="nav-icon">📚</span>
+        <span class="nav-icon"><i class='bx bx-library'></i></span>
         <span class="nav-label">Courses</span>
       </div>
       <div class="nav-item" data-page="attendance">
-        <span class="nav-icon">📋</span>
+        <span class="nav-icon"><i class='bx bx-calendar-check'></i></span>
         <span class="nav-label">Absensi</span>
         <span class="nav-badge" id="attendance-badge" style="display:none">0</span>
       </div>
       <div class="nav-item" data-page="assignments">
-        <span class="nav-icon">📝</span>
+        <span class="nav-icon"><i class='bx bx-task'></i></span>
         <span class="nav-label">Tugas</span>
       </div>
       <div class="nav-item" data-page="settings">
-        <span class="nav-icon">⚙️</span>
+        <span class="nav-icon"><i class='bx bx-cog'></i></span>
         <span class="nav-label">Settings</span>
       </div>
     </nav>
@@ -43,7 +45,7 @@
       <div class="login-container">
         <div class="login-card">
           <div class="login-header">
-            <div class="login-logo">🎓</div>
+            <div class="login-logo"><i class='bx bxs-graduation'></i></div>
             <h1>SPADA UPN</h1>
             <p>E-Learning Companion</p>
           </div>
@@ -65,7 +67,7 @@
             <div id="login-error" class="login-error" style="display:none"></div>
             <button type="submit" class="btn-primary btn-login" id="btn-login-submit">
               <span class="btn-text">Login</span>
-              <span class="btn-loader" style="display:none">⏳</span>
+              <span class="btn-loader" style="display:none"><i class='bx bx-loader-alt bx-spin'></i></span>
             </button>
           </form>
         </div>
@@ -76,7 +78,7 @@
     <div class="page" id="page-dashboard">
       <div class="page-header">
         <h1>Dashboard</h1>
-        <button class="btn-icon" id="btn-refresh-dashboard">🔄</button>
+        <button class="btn-icon" id="btn-refresh-dashboard"><i class='bx bx-refresh'></i></button>
       </div>
       <div class="page-content">
         <!-- Stats -->
@@ -101,7 +103,7 @@
 
         <!-- My Courses -->
         <div class="section-card">
-          <h2>📚 Mata Kuliah</h2>
+          <h2><i class='bx bx-library' style='margin-right: 6px; transform: translateY(2px);'></i> Mata Kuliah</h2>
           <div id="dashboard-courses" class="course-mini-grid">
             <div class="loading-spinner"></div>
           </div>
@@ -109,7 +111,7 @@
 
         <!-- Upcoming Deadlines -->
         <div class="section-card">
-          <h2>⏰ Deadline Terdekat</h2>
+          <h2><i class='bx bx-alarm' style='margin-right: 6px; transform: translateY(2px);'></i> Deadline Terdekat</h2>
           <div id="dashboard-deadlines">
             <div class="loading-spinner"></div>
           </div>
@@ -121,7 +123,7 @@
     <div class="page" id="page-courses">
       <div class="page-header">
         <h1>Mata Kuliah</h1>
-        <button class="btn-icon" id="btn-refresh-courses">🔄</button>
+        <button class="btn-icon" id="btn-refresh-courses"><i class='bx bx-refresh'></i></button>
       </div>
       <div class="page-content">
         <div id="courses-grid" class="courses-grid">
@@ -133,14 +135,14 @@
     <!-- ==================== COURSE DETAIL ==================== -->
     <div class="page" id="page-course-detail">
       <div class="page-header">
-        <button class="btn-back" id="btn-back-course">←</button>
+        <button class="btn-back" id="btn-back-course"><i class='bx bx-arrow-back'></i></button>
         <h1 id="course-detail-title">Course</h1>
       </div>
       <div class="tab-bar">
-        <button class="tab-btn active" data-tab="materials">📄 Materi</button>
-        <button class="tab-btn" data-tab="assignments">📝 Tugas</button>
-        <button class="tab-btn" data-tab="attendance">📋 Absen</button>
-        <button class="tab-btn" data-tab="forums">📢 Forum</button>
+        <button class="tab-btn active" data-tab="materials"><i class='bx bx-file'></i> Materi</button>
+        <button class="tab-btn" data-tab="assignments"><i class='bx bx-task'></i> Tugas</button>
+        <button class="tab-btn" data-tab="attendance"><i class='bx bx-calendar-check'></i> Absen</button>
+        <button class="tab-btn" data-tab="forums"><i class='bx bx-conversation'></i> Forum</button>
       </div>
       <div class="page-content" id="course-detail-content">
         <div class="loading-spinner"></div>
@@ -151,7 +153,7 @@
     <div class="page" id="page-attendance">
       <div class="page-header">
         <h1>Absensi</h1>
-        <button class="btn-icon" id="btn-refresh-attendance">🔄</button>
+        <button class="btn-icon" id="btn-refresh-attendance"><i class='bx bx-refresh'></i></button>
       </div>
       <div class="page-content" id="attendance-content">
         <div class="loading-spinner"></div>
@@ -162,7 +164,7 @@
     <div class="page" id="page-assignments">
       <div class="page-header">
         <h1>Tugas</h1>
-        <button class="btn-icon" id="btn-refresh-assignments">🔄</button>
+        <button class="btn-icon" id="btn-refresh-assignments"><i class='bx bx-refresh'></i></button>
       </div>
       <div class="page-content" id="assignments-content">
         <div class="loading-spinner"></div>
@@ -172,7 +174,7 @@
     <!-- ==================== ASSIGNMENT DETAIL ==================== -->
     <div class="page" id="page-assignment-detail">
       <div class="page-header">
-        <button class="btn-back" id="btn-back-assignment">←</button>
+        <button class="btn-back" id="btn-back-assignment"><i class='bx bx-arrow-back'></i></button>
         <h1 id="assignment-detail-title">Detail Tugas</h1>
       </div>
       <div class="page-content" id="assignment-detail-content">
@@ -187,14 +189,14 @@
       </div>
       <div class="page-content">
         <div class="section-card">
-          <h2>👤 Akun</h2>
+          <h2><i class='bx bx-user' style='margin-right: 6px; transform: translateY(2px);'></i> Akun</h2>
           <div class="setting-row">
             <span>Username</span>
             <span id="setting-username">-</span>
           </div>
         </div>
         <div class="section-card">
-          <h2>🔔 Notifikasi</h2>
+          <h2><i class='bx bx-bell' style='margin-right: 6px; transform: translateY(2px);'></i> Notifikasi</h2>
           <div class="setting-row">
             <span>Auto Absen</span>
             <label class="toggle">
@@ -211,8 +213,8 @@
           </div>
         </div>
         <div class="section-card">
-          <h2>🗑️ Data</h2>
-          <button class="btn-danger" id="btn-logout">Logout & Hapus Data</button>
+          <h2><i class='bx bx-data' style='margin-right: 6px; transform: translateY(2px);'></i> Data</h2>
+          <button class="btn-danger" id="btn-logout"><i class='bx bx-log-out'></i> Logout & Hapus Data</button>
         </div>
         <div class="app-info">
           <p>SPADA UPN v1.0.0</p>
