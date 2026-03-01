@@ -53,7 +53,10 @@ class Scheduler {
 
     async checkAttendance() {
         const autoAttendance = this.store.get('autoAttendance', true);
-        if (!autoAttendance) return;
+        const notifications = this.store.get('notifications', true);
+
+        // If neither is enabled, there's nothing to do here
+        if (!autoAttendance && !notifications) return;
 
         console.log('[Scheduler] Checking attendance...');
         try {
@@ -67,27 +70,37 @@ class Scheduler {
                         if (session.canSubmit && session.sessionId && !this.checkedAttendance.has(session.sessionId)) {
                             console.log(`[Scheduler] Found submittable attendance: ${module.courseName} - ${session.date}`);
 
-                            // Notify about available attendance
-                            this.notify(
-                                '📋 Absensi Tersedia!',
-                                `${module.courseName}\n${session.date} - ${session.description}`
-                            );
-
-                            // Auto submit attendance
-                            const result = await this.client.submitAttendance(session.sessionId, module.moduleId);
-                            if (result.success) {
+                            // Notify about available attendance if notifications are on
+                            if (notifications) {
                                 this.notify(
-                                    '✅ Absensi Berhasil!',
-                                    `${module.courseName}\nOtomatis absen Present untuk ${session.date}`
-                                );
-                                this.checkedAttendance.add(session.sessionId);
-                                console.log(`[Scheduler] Auto-attended: ${module.courseName}`);
-                            } else {
-                                this.notify(
-                                    '❌ Gagal Absensi',
-                                    `${module.courseName}\n${result.error}`
+                                    '📋 Waktunya Absensi!',
+                                    `${module.courseName}\nSegera absen untuk sesi: ${session.date}`
                                 );
                             }
+
+                            // Auto submit attendance if autoAttendance is on
+                            if (autoAttendance) {
+                                const result = await this.client.submitAttendance(session.sessionId, module.moduleId);
+                                if (result.success) {
+                                    if (notifications) {
+                                        this.notify(
+                                            '✅ Auto-Absen Berhasil!',
+                                            `${module.courseName}\nBerhasil absen \'Present\' secara otomatis.`
+                                        );
+                                    }
+                                    console.log(`[Scheduler] Auto-attended: ${module.courseName}`);
+                                } else {
+                                    if (notifications) {
+                                        this.notify(
+                                            '❌ Gagal Auto-Absen',
+                                            `${module.courseName}\n${result.error}`
+                                        );
+                                    }
+                                }
+                            }
+
+                            // Mark as checked so we don't notify/submit again
+                            this.checkedAttendance.add(session.sessionId);
                         }
                     }
                 } catch (e) {
