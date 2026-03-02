@@ -1,10 +1,14 @@
-const { app, BrowserWindow, ipcMain, Notification, Tray, Menu, nativeImage } = require('electron');
-const path = require('path');
-const fs = require('fs');
-const Store = require('electron-store');
-const cron = require('node-cron');
-const SpadaClient = require('./src/services/spada-client');
-const Scheduler = require('./src/services/scheduler');
+import { app, BrowserWindow, ipcMain, Notification, Tray, Menu, nativeImage } from 'electron';
+import path from 'path';
+import fs from 'fs';
+import Store from 'electron-store';
+import cron from 'node-cron';
+import SpadaClient from './src/services/spada-client.js';
+import Scheduler from './src/services/scheduler.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const store = new Store();
 let mainWindow;
@@ -23,7 +27,7 @@ function createWindow() {
     backgroundColor: '#0a0e1a',
     icon: path.join(__dirname, 'assets', 'icon.png'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
       backgroundThrottling: false

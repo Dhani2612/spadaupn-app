@@ -1,4 +1,4 @@
-const cron = require('node-cron');
+import cron from 'node-cron';
 
 class Scheduler {
     constructor(spadaClient, notifyFn, store) {
@@ -260,4 +260,4 @@ class Scheduler {
     }
 }
 
-module.exports = Scheduler;
+export default Scheduler;
