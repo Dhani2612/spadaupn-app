@@ -20,6 +20,13 @@ const App = {
         this.bindSettings();
         this.bindActions();
         this.tryAutoLogin();
+
+        // Auto-refresh dashboard stats & trigger auto-attendance every 5 mins while app is open
+        setInterval(() => {
+            if (this.currentPage !== 'login' && this.courses.length > 0) {
+                this.loadDashboardStats();
+            }
+        }, 5 * 60 * 1000);
     },
 
     // ========================
@@ -209,6 +216,40 @@ const App = {
                 for (const att of content.attendance) {
                     try {
                         const sessions = await spada.getAttendanceSessions(att.moduleId);
+
+                        // NEW LOGIC: FRONTEND AUTO-ATTENDANCE INJECTION
+                        const settings = this.getSettings();
+                        if (settings.autoAttendance) {
+                            if (!this.checkedAttendanceCache) this.checkedAttendanceCache = new Set();
+
+                            for (const session of sessions) {
+                                if (session.canSubmit && session.sessionId && !this.checkedAttendanceCache.has(session.sessionId)) {
+                                    // Submit automatically
+                                    const result = await spada.submitAttendance(session.sessionId);
+                                    if (result.success) {
+                                        this.checkedAttendanceCache.add(session.sessionId);
+                                        this.showToast('✅ Auto-Absen Berhasil!', `Telah absen Present untuk ${course.name}`, 'success');
+
+                                        // Capacitor Notification if available
+                                        if (window.Capacitor && window.Capacitor.Plugins.LocalNotifications && settings.notifications) {
+                                            window.Capacitor.Plugins.LocalNotifications.schedule({
+                                                notifications: [{
+                                                    title: '✅ Auto-Absen Berhasil!',
+                                                    body: `Berhasil absen otomatis untuk ${course.name}`,
+                                                    id: new Date().getTime(),
+                                                    schedule: { at: new Date(Date.now() + 1000) }
+                                                }]
+                                            });
+                                        }
+
+                                        // Once submitted successfully, pretend it's no longer submittable so badge doesn't increment
+                                        session.canSubmit = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Add remaining submittable sessions (if auto-absen failed or is disabled) to pending badge count
                         pendingAttendance += sessions.filter(s => s.canSubmit).length;
                     } catch { }
                 }

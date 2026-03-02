@@ -243,6 +243,35 @@ class SpadaClient {
     // ========================
     // ATTENDANCE - Use &view=5 for ALL sessions
     // ========================
+    async getAllAttendanceModules() {
+        try {
+            const courses = await this.getCourses();
+            const attendanceModules = [];
+
+            for (const course of courses) {
+                try {
+                    const content = await this.getCourseContent(course.id);
+                    for (const att of content.attendance) {
+                        if (att.moduleId) {
+                            attendanceModules.push({
+                                courseName: course.name,
+                                courseId: course.id,
+                                moduleId: att.moduleId,
+                                name: att.name,
+                                url: att.url
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.error(`Error getting attendance modules for ${course.name}:`, e.message);
+                }
+            }
+            return attendanceModules;
+        } catch (error) {
+            throw new Error(`Failed to get all attendance modules: ${error.message}`);
+        }
+    }
+
     async getAttendanceSessions(moduleId) {
         try {
             // view=5 = All sessions

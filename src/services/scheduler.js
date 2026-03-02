@@ -32,9 +32,10 @@ class Scheduler {
 
         // Initial check on start
         setTimeout(() => {
+            console.log('[Scheduler] Running initial boot checks...');
             this.checkAttendance();
             this.checkDeadlines();
-        }, 5000);
+        }, 1000);
 
         console.log('[Scheduler] Started all jobs');
     }
