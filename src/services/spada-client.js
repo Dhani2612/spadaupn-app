@@ -299,7 +299,10 @@ class SpadaClient {
 
             // Extract all hidden inputs and default values (e.g sessid, sesskey, _qf, etc)
             form.querySelectorAll('input[type="hidden"], input[type="submit"]').forEach(el => {
-                if (el.name) fp.append(el.name, el.value || '');
+                // DO NOT send the cancel button, otherwise Moodle aborts the submission!
+                if (el.name && el.name.toLowerCase() !== 'cancel') {
+                    fp.append(el.name, el.value || '');
+                }
             });
 
             // Find the radio button for 'Present' or 'Hadir'
