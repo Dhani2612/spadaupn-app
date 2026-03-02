@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, Notification, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const Store = require('electron-store');
 const cron = require('node-cron');
 const SpadaClient = require('./src/services/spada-client');
@@ -38,7 +39,11 @@ function createWindow() {
 }
 
 function createTray() {
-  const iconPath = path.join(__dirname, 'assets', 'icon.png');
+  // Try normal dirname first, fallback to process.cwd() if running via npm run dev
+  const iconPath = fs.existsSync(path.join(__dirname, 'assets', 'icon.png'))
+    ? path.join(__dirname, 'assets', 'icon.png')
+    : path.join(process.cwd(), 'assets', 'icon.png');
+
   let trayIcon;
   try {
     trayIcon = nativeImage.createFromPath(iconPath);
