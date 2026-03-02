@@ -292,23 +292,54 @@ class SpadaClient {
             const formPage = await this.get(`/mod/attendance/attendance.php?sessid=${sessionId}&sesskey=${this.sesskey}`);
             const doc = this.parseHTML(formPage.data);
 
-            let presentValue = null;
-            doc.querySelectorAll('input[type="radio"]').forEach(el => {
-                const label = el.parentElement?.textContent.trim().toLowerCase() || '';
-                if (label.includes('present') || label.includes('hadir')) presentValue = el.value;
-            });
-            if (!presentValue) presentValue = doc.querySelector('input[type="radio"]')?.value;
-            if (!presentValue) return { success: false, error: 'Could not find Present option' };
+            const form = doc.querySelector('form[action*="attendance.php"]');
+            if (!form) return { success: false, error: 'Form absen tidak ditemukan. Sesi mungkin belum bisa diakses.' };
 
-            const sesskey = doc.querySelector('input[name="sesskey"]')?.value || this.sesskey;
             const fp = new URLSearchParams();
-            fp.append('sessid', sessionId);
-            fp.append('sesskey', sesskey);
-            fp.append('_qf__mod_attendance_student_attendance_form', '1');
-            fp.append('mform_isexpanded_id_session', '1');
-            fp.append('status', presentValue);
-            fp.append('submitbutton', 'Save changes');
-            await this.post('/mod/attendance/attendance.php', fp.toString());
+
+            // Extract all hidden inputs and default values (e.g sessid, sesskey, _qf, etc)
+            form.querySelectorAll('input[type="hidden"], input[type="submit"]').forEach(el => {
+                if (el.name) fp.append(el.name, el.value || '');
+            });
+
+            // Find the radio button for 'Present' or 'Hadir'
+            let statusName = null;
+            let presentValue = null;
+
+            form.querySelectorAll('input[type="radio"]').forEach(el => {
+                let labelText = '';
+                // Check if there is an explicit <label for="id">
+                if (el.id) {
+                    const lbl = form.querySelector(`label[for="${el.id}"]`);
+                    if (lbl) labelText = lbl.textContent.toLowerCase();
+                }
+                // Fallback to parent text
+                if (!labelText && el.parentElement) labelText = el.parentElement.textContent.toLowerCase();
+
+                if (labelText.includes('hadir') || labelText.includes('present')) {
+                    presentValue = el.value;
+                    statusName = el.name;
+                }
+            });
+
+            // Fallback: If no "Hadir" label found, pick the first radio button in the form
+            if (!presentValue) {
+                const firstRadio = form.querySelector('input[type="radio"]');
+                if (firstRadio) {
+                    presentValue = firstRadio.value;
+                    statusName = firstRadio.name;
+                }
+            }
+
+            if (!presentValue || !statusName) {
+                return { success: false, error: 'Pilihan absen (Hadir/Present) tidak ditemukan di SPADA.' };
+            }
+
+            fp.append(statusName, presentValue);
+
+            // POST to the form action
+            const actionUrl = form.getAttribute('action') || '/mod/attendance/attendance.php';
+            await this.post(actionUrl, fp.toString());
             return { success: true };
         } catch (error) {
             return { success: false, error: error.message };

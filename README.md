@@ -1,8 +1,8 @@
-# SPADA UPNYK Mobile App 🚀
+# SPADA UPNYK Mobile App
 
 Aplikasi *mobile unofficial* berbasis WebView pintar untuk mengakses SPADA UPN "Veteran" Yogyakarta secara jauh lebih cepat, modern, dan responsif. Aplikasi ini dibangun dengan framework **Capacitor**, **Vite**, dan murni **HTML/CSS/Vanilla JS**.
 
-## ✨ Fitur Utama
+## Fitur Utama
 *   **Dashboard & Statistik Terpusat**: Lihat ringkasan SKS, jumlah mata kuliah, dan tugas aktif langsung dari satu layar.
 *   **Auto-Login & Sesi Cepat**: Login sekali, akses berkali-kali tanpa perlu terus-menerus memasukkan kredensial Moodle.
 *   **Manajemen Tugas (Smart Assigment)**: 
@@ -10,15 +10,15 @@ Aplikasi *mobile unofficial* berbasis WebView pintar untuk mengakses SPADA UPN "
     *   Pengumpulan tugas *in-app* (langsung dari aplikasi, mendukung kirim file maupun teks).
 *   **Sistem Absensi Sekali Klik**:
     *   Buka mata kuliah untuk melihat semua jadwal absensi selama satu semester penuh.
-    *   Klik **"✅ Hadir"** untuk absen langsung dari dalam aplikasi tanpa perlu login browser.
+    *   Klik **"Hadir"** untuk absen langsung dari dalam aplikasi tanpa perlu login browser.
     *   Otomatis *sorting* berdasarkan ID perkuliahan dan urutan tanggal sesi (kronologis waktu).
-*   **Push Notifications (Pengingat Deadline)**: 
-    *   Aplikasi memeriksa Moodle di latar belakang dan memunculkan notifikasi ponsel ketika ada tenggat waktu tugas yang kurang dari 24 jam.
+*   **Push Notifications (Pengingat Deadline & Kehadiran)**: 
+    *   Aplikasi memeriksa Moodle di latar belakang dan memunculkan notifikasi ponsel ketika ada tenggat waktu tugas yang kurang dari 24 jam serta ketika sesi absen dibuka.
 *   **Latar Belakang Kosmik Modern**: Desain antarmuka (UI) gelap moderen ala astronomi/aurora beralih dari bawaan Moodle standar.
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 1.  **[Capacitor](https://capacitorjs.com/)**: Mengubah kode Web menjadi aplikasi Android asli (APK) yang berinteraksi dengan API ponsel (seperti Push Notification local).
 2.  **[Vite](https://vitejs.dev/)**: *Bundler* front-end super cepat untuk lingkungan *development* dan pemrosesan *production build*.
 3.  **HTML5 & CSS3 Vanilla**: Tanpa framework UI yang berat, menggunakan variabel CSS kustom untuk merender UI yang sangat responsif.
@@ -26,7 +26,7 @@ Aplikasi *mobile unofficial* berbasis WebView pintar untuk mengakses SPADA UPN "
 
 ---
 
-## 🚀 Cara Menjalankan Secara Lokal (Development)
+## Cara Menjalankan Secara Lokal (Development)
 
 Pastikan kamu memiliki **Node.js** dan **Android Studio** ter-install di komputermu.
 
@@ -67,5 +67,5 @@ Dari dalam Android Studio, kamu bebas untuk mengklik **Run (Shift+F10)** ke emul
 
 ---
 
-## ⚠️ Diskusi / Peringatan
+## Diskusi / Peringatan
 Proyek ini **bukan aplikasi resmi** dari kampus UPN "Veteran" Yogyakarta atau admin terkait, melainkan sekadar bentuk penuangan karya *front-end* mahasiswa untuk membangun kapabilitas portfolio pemrograman web-to-mobile wrapper. Gunakan aplikasi ini secara bijaksana dan bertanggung jawab. Data mahasiswa diamankan semata-mata di perangkat (*device storage/local config*) pemakai.
