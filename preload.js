@@ -28,7 +28,10 @@ contextBridge.exposeInMainWorld('spadaAPI', {
 
     // Settings
     getSettings: () => ipcRenderer.invoke('settings:get'),
-    setSettings: (settings) => ipcRenderer.invoke('settings:set', settings),
+    saveSettings: (settings) => ipcRenderer.invoke('settings:set', settings),
+
+    // Notifications
+    showNotification: (title, body) => ipcRenderer.invoke('app:notify', { title, body }),
 
     // Store
     storeGet: (key) => ipcRenderer.invoke('store:get', key),

@@ -24,7 +24,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      backgroundThrottling: false
     }
   });
 
@@ -204,6 +205,11 @@ ipcMain.handle('settings:set', (event, settings) => {
 
 ipcMain.handle('store:get', (event, key) => store.get(key));
 ipcMain.handle('store:set', (event, key, value) => store.set(key, value));
+
+ipcMain.handle('app:notify', (event, { title, body }) => {
+  showNotification(title, body);
+  return true;
+});
 
 app.whenReady().then(() => {
   createWindow();

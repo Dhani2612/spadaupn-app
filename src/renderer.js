@@ -242,6 +242,11 @@ const App = {
                                             });
                                         }
 
+                                        // Desktop (Electron) Notification if available
+                                        if (window.electronAPI) {
+                                            window.electronAPI.showNotification('✅ Auto-Absen Berhasil (Desktop)!', `Telah absen otomatis untuk ${course.name} saat berjalan di background.`);
+                                        }
+
                                         // Once submitted successfully, pretend it's no longer submittable so badge doesn't increment
                                         session.canSubmit = false;
                                     }
