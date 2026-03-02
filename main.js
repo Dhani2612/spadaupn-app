@@ -41,8 +41,9 @@ function createTray() {
   const iconPath = path.join(__dirname, 'assets', 'icon.png');
   let trayIcon;
   try {
-    trayIcon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 });
+    trayIcon = nativeImage.createFromPath(iconPath);
   } catch (e) {
+    console.error("Gagal memuat icon system tray:", e);
     trayIcon = nativeImage.createEmpty();
   }
 
